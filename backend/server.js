@@ -1,13 +1,15 @@
 const path = require("path");
 const express = require("express");
+const connectDB = require("./config/db");
+const { errorHandler } = require("./middleware/errorMiddleware");
 require("colors");
 require("dotenv").config();
 // const { errorHandler } = require("./middleware/errorMiddleware");
 // const connectDB = require("./config/db");
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5005;
 
 // Connect to database
-// connectDB();
+connectDB();
 
 const app = express();
 
@@ -16,7 +18,7 @@ app.use(express.urlencoded({ extended: false }));
 
 // Routes
 app.use("/api/users", require("./routes/userRoutes"));
-app.use("/api/tickets", require("./routes/ticketRoutes"));
+app.use(errorHandler);
 
 // Serve Frontend
 if (process.env.NODE_ENV === "production") {
@@ -31,8 +33,13 @@ if (process.env.NODE_ENV === "production") {
   app.get("/", (_, res) => {
     res.status(200).json({ message: "Welcome to the Support Desk API" });
   });
+
+  app.post("/", (req, res) => {
+    console.log(req.body);
+    res.status(200).json({ message: "Message coming from Postman" });
+  });
 }
 
-app.use(errorHandler);
+// app.use(errorHandler);
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
