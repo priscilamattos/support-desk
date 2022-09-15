@@ -36,7 +36,7 @@ if (process.env.NODE_ENV === "production") {
 
   app.post("/", (req, res) => {
     console.log(req.body);
-    res.status(200).json({ message: "Message coming from Postman" });
+    res.status(201).json({ message: "Message coming from Postman" });
   });
 }
 
